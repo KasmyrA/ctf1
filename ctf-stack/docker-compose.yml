@@ -1,14 +1,12 @@
 services:
   ollama:
-    # Use ollama/ollama:rocm for AMD GPU (Ryzen AI 395) acceleration.
+    # Use ollama/ollama:rocm for AMD GPU acceleration.
+    # Use ollama/ollama:cuda for NVIDIA GPU acceleration.
     # Fall back to ollama/ollama:latest for CPU-only.
     image: ollama/ollama:latest 
     container_name: ollama
     volumes:
       - ollama_data:/root/.ollama
-    devices:
-      - /dev/kfd
-      - /dev/dri
     networks:
       - internal
     restart: unless-stopped
