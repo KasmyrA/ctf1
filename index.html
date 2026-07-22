@@ -68,7 +68,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Zdobądź sekret bibliotekarza</h1>
+    <h1>Zdobądź sekret bibliotekarza/Get the flag</h1>
     <textarea id="prompt" placeholder="Wpisz zapytanie..."></textarea>
     <button id="btn" onclick="send()">Wyślij</button>
     <pre id="output"></pre>
@@ -104,7 +104,8 @@
           output.textContent = data.response;
         }
       } catch (err) {
-        output.textContent = `Błąd sieci: ${err.message}`;
+        output.textContent = `Błąd sieci: ${err.message} \n 
+        Sprawdź, czy model jest dostępny.`;
         output.className = "error";
       } finally {
         btn.disabled = false;

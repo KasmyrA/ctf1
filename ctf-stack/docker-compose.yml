@@ -26,17 +26,20 @@ services:
     depends_on:
       ollama:
         condition: service_healthy
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
     restart: "no"
-    command:
-      - sh
+    entrypoint:
+      - /bin/sh
       - -lc
+    command:
       - |
         set -eu
-        model="${CHAT_MODEL:-gemma4:e2b}"
-        if ollama list | awk 'NR > 1 {print $1}' | grep -Fxq "$model"; then
-          echo "Model $model is already present"
+        model="$${CHAT_MODEL:-gemma4:e2b}"
+        if ollama list | awk 'NR > 1 {print $$1}' | grep -Fxq "$$model"; then
+          echo "Model $$model is already present"
         else
-          ollama pull "$model"
+          ollama pull "$$model"
         fi
 
   backend:

@@ -39,7 +39,7 @@ still leaving the secret visible to the model through the system prompt.
    the `SECRET_FLAG` entry inside `docker-compose.yml`, or inject it from your
    orchestrator's secret store at deploy time.
 
-3. **AMD GPU (Ryzen AI 395) acceleration** — `ollama/ollama:rocm`
+3. **Set the right acceleration for LLM** — `ollama/ollama:rocm`
    needs `/dev/kfd` and `/dev/dri` passed through (already in the compose
    file) and the host's `render` group permissions for the user running
    Docker. Confirm GPU is picked up:
