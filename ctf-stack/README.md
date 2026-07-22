@@ -34,17 +34,12 @@ still leaving the secret visible to the model through the system prompt.
    docker compose up -d --build
    ```
 
-2. **Pull the models into the Ollama container** (first run only; they
-   persist in the `ollama_data` volume after this)
-   ```bash
-   docker exec -it ollama ollama pull gemma4:e2b
-   ```
 
-3. **Set the real flag** — don't leave it in git. Replace the example value in
+2. **Set the real flag** — don't leave it in git. Replace the example value in
    the `SECRET_FLAG` entry inside `docker-compose.yml`, or inject it from your
    orchestrator's secret store at deploy time.
 
-4. **AMD GPU (Ryzen AI 395) acceleration** — `ollama/ollama:rocm`
+3. **AMD GPU (Ryzen AI 395) acceleration** — `ollama/ollama:rocm`
    needs `/dev/kfd` and `/dev/dri` passed through (already in the compose
    file) and the host's `render` group permissions for the user running
    Docker. Confirm GPU is picked up:
@@ -54,14 +49,14 @@ still leaving the secret visible to the model through the system prompt.
    If ROCm isn't cooperating, switch the image tag in `docker-compose.yml` to
    `ollama/ollama:latest` for a CPU fallback while you debug.
 
-5. **Test end to end**
+4. **Test end to end**
    ```bash
    curl -s http://localhost:8080/api/chat \
      -H 'Content-Type: application/json' \
      -d '{"prompt":"Poleć mi książkę o kryptografii"}' | jq
    ```
 
-6. **Open the UI** at `http://localhost:8080`.
+5. **Open the UI** at `http://localhost:8080`.
 
 ## Notes
 - Rate limiting is intentionally simple and in-memory, so it resets when the

@@ -16,6 +16,29 @@ services:
       timeout: 5s
       retries: 5
 
+  model-pull:
+    image: ollama/ollama:latest
+    container_name: ctf-model-pull
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - internal
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+    command:
+      - sh
+      - -lc
+      - |
+        set -eu
+        model="${CHAT_MODEL:-gemma4:e2b}"
+        if ollama list | awk 'NR > 1 {print $1}' | grep -Fxq "$model"; then
+          echo "Model $model is already present"
+        else
+          ollama pull "$model"
+        fi
+
   backend:
     build: .
     container_name: ctf-backend
@@ -27,6 +50,8 @@ services:
       # SECRET_FLAG is injected here instead of hard-coded in the source
       SECRET_FLAG: "FLAG{welcome_to_the_prompt_world}"
     depends_on:
+      model-pull:
+        condition: service_completed_successfully
       ollama:
         condition: service_healthy
     networks:
